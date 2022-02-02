@@ -59,39 +59,12 @@ const NEXT_ONEPIPE_BACKEND = `http://localhost:5670`
   const ariaLabel = { 'aria-label': 'description' }
 
 
-function getBalance(status){
+function goPage(dir){
       
-       let account_number, email, mobile_no
-
-       account_number = document.getElementById('account_number').value.toLowerCase()
-       email = document.getElementById('email').value.toLowerCase()
-       mobile_no = document.getElementById('mobile_no').value.toLowerCase()
-
-
-
-      if(!( account_number && email && mobile_no )) return alert('incomplete form')
-        
-        let bodyObject={
-      
-                        account_number, email, mobile_no
-         
-        }
-           bodyObject = JSON.stringify(bodyObject)
-
-           setRemoveForm(true)
-
-       fetch(`${NEXT_ONEPIPE_BACKEND}/balance`,{method:'post', body:bodyObject, headers:{'Content-Type':'Application/json'}})
-      .then(response=>response.json())
-      .then(data=>{
-        
        
-        setData(data.successResponse.data.provider_response)
 
+window.location.assign(`/${dir}`)
 
-
-
-
-      })
 
 }
 
@@ -109,34 +82,23 @@ function getBalance(status){
 
           (<>
           
-          { removeForm && data && (<>
-
-              <p>
-              Balance on your {data.account_number}:
-              </p>
-              <p>
-              Available Account Balance: {data.available_balance}
-              </p>
-
-
-            </>)}   
+      
 
 
         { !removeForm && (<>
           
           <Typography>
-         get balance
+        onepipe mock menu
           </Typography>
-              <br/>
-              <Input style={{marginBottom:'5%'}} placeholder="Account Number" inputProps={ariaLabel} id='account_number'/>          
-              <br/>
-              <Input style={{marginBottom:'5%'}} placeholder="email" inputProps={ariaLabel} id='email'/> 
-              <br/>                
-              <Input style={{marginBottom:'5%'}} placeholder="Associated Phone Number" inputProps={ariaLabel} id='mobile_no'/>
-             
-              <br/>              
+           
+              
+              <Button style={{marginBottom:'5%'}} variant="outlined" size='small'  id='statement' onClick={()=>goPage('statement')}>GENERATE STATEMENT</Button>
 
-              <Button style={{marginBottom:'5%'}} variant="outlined" size='small'  id='getBalance' onClick={getBalance}>Get Balance</Button>
+              <Button style={{marginBottom:'5%'}} variant="outlined" size='small'  id='collect' onClick={()=>goPage('collect')}>PAY</Button>
+
+              <Button style={{marginBottom:'5%'}} variant="outlined" size='small'  id='account' onClick={()=>goPage('account')}>OPEN ACCOUNT</Button>
+
+              <Button style={{marginBottom:'5%'}} variant="outlined" size='small'  id='balance' onClick={()=>goPage('balance')}>CHECK BALANCE</Button>
 
          
 

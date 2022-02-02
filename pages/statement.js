@@ -59,32 +59,33 @@ const NEXT_ONEPIPE_BACKEND = `http://localhost:5670`
   const ariaLabel = { 'aria-label': 'description' }
 
 
-function getBalance(status){
+function getStatement(status){
       
-       let account_number, email, mobile_no
+       let email, mobile_no, account_number, start_date, end_date
 
-       account_number = document.getElementById('account_number').value.toLowerCase()
        email = document.getElementById('email').value.toLowerCase()
        mobile_no = document.getElementById('mobile_no').value.toLowerCase()
+       account_number = document.getElementById('account_number').value.toLowerCase()
+       start_date = document.getElementById('start_date').value.toLowerCase()
+       end_date = document.getElementById('end_date').value.toLowerCase()
 
 
-
-      if(!( account_number && email && mobile_no )) return alert('incomplete form')
+      if(!( email && mobile_no && account_number && start_date && end_date )) return alert('incomplete form')
         
         let bodyObject={
       
-                        account_number, email, mobile_no
+                       email , mobile_no , account_number , start_date , end_date
          
         }
            bodyObject = JSON.stringify(bodyObject)
 
            setRemoveForm(true)
 
-       fetch(`${NEXT_ONEPIPE_BACKEND}/balance`,{method:'post', body:bodyObject, headers:{'Content-Type':'Application/json'}})
+       fetch(`${NEXT_ONEPIPE_BACKEND}/statement`,{method:'post', body:bodyObject, headers:{'Content-Type':'Application/json'}})
       .then(response=>response.json())
       .then(data=>{
         
-       
+        
         setData(data.successResponse.data.provider_response)
 
 
@@ -109,15 +110,11 @@ function getBalance(status){
 
           (<>
           
-          { removeForm && data && (<>
+          { removeForm && data.statement_list && (<>
 
               <p>
-              Balance on your {data.account_number}:
+                Statement of account was fetched successfully, check your mail.
               </p>
-              <p>
-              Available Account Balance: {data.available_balance}
-              </p>
-
 
             </>)}   
 
@@ -125,18 +122,20 @@ function getBalance(status){
         { !removeForm && (<>
           
           <Typography>
-         get balance
+        get statement
           </Typography>
               <br/>
-              <Input style={{marginBottom:'5%'}} placeholder="Account Number" inputProps={ariaLabel} id='account_number'/>          
+              <Input style={{marginBottom:'5%'}} placeholder="ACCOUNT Number" inputProps={ariaLabel} id='account_number'/>          
               <br/>
-              <Input style={{marginBottom:'5%'}} placeholder="email" inputProps={ariaLabel} id='email'/> 
-              <br/>                
-              <Input style={{marginBottom:'5%'}} placeholder="Associated Phone Number" inputProps={ariaLabel} id='mobile_no'/>
-             
+              <Input style={{marginBottom:'5%'}} placeholder="email address" inputProps={ariaLabel} id='email'/>          
+              <br/>
+              <Input style={{marginBottom:'5%'}} placeholder="mobile number" inputProps={ariaLabel} id='mobile_no'/>          
               <br/>              
+              <Input style={{marginBottom:'5%'}} placeholder="date to begin from" inputProps={ariaLabel} id='start_date'/>
+              <Input style={{marginBottom:'5%'}} placeholder="date to end at" inputProps={ariaLabel} id='end_date'/>          
+              <br/>             
 
-              <Button style={{marginBottom:'5%'}} variant="outlined" size='small'  id='getBalance' onClick={getBalance}>Get Balance</Button>
+              <Button style={{marginBottom:'5%'}} variant="outlined" size='small'  id='statement' onClick={getStatement}>GENERATE STATEMENT</Button>
 
          
 
